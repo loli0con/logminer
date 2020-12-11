@@ -1,7 +1,7 @@
 # logminer
 a homework for course
 
-## introduction
+## Introduction
 > 题目名称  
 日志挖掘——处理数据  
 >
@@ -17,3 +17,7 @@ a homework for course
 进出车次数：xxx  
 累计停放秒数：xxxxxxxxxx  
 5、答案在作业提交后给出  
+
+## Problem and Thought
+P: 并行程序在使用一个进程读取文件的耗时，远高于串行程序  
+T: 读取文件的方式不同，不同API引发的I/O次数不同，用read一次读整个文件的效率明显高于使用一行一行地去读整个文件
