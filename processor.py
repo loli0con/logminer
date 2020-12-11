@@ -7,6 +7,7 @@ import time
 HOMEWORK_TITLE = "[作业]日志挖掘——处理数据"
 MY_STUDENT_NUMBER = "201825010122"
 INPUT_ENCODING = "GBK"
+log = []
 '''
 学号: 201825010122
 进出车次数: 9612
@@ -25,6 +26,8 @@ class Processor:
         self._init()
 
     def _init(self):
+        global log
+        log.append(time.time())
         for line in self.input_file:
             line = line.strip()
 
@@ -48,6 +51,7 @@ class Processor:
                                    )
             record = {"datetime": dt, "car_no": car_no, "i_o": i_o}
             self.records.append(record)
+        log.append(time.time())
 
     def calculate_1(self):
         return len(self.records) // 2
@@ -93,6 +97,23 @@ def get_input_file_path():
     return _input_file_path
 
 
+def print_run_time():
+    def get_time_format(seconds):
+        m, s = divmod(seconds, 60)
+        h, m = divmod(m, 60)
+        return "%02d:%02d:%02d." % (h, m, s)
+
+    print("Start ReadFile:00:00:00.000")
+    print("End ReadFile:" +
+          get_time_format(int(log[1] - log[0])) +
+          str(round(log[1] - log[0], 3)).split(".")[-1]
+          )
+    print("End Process:" +
+          get_time_format(int(log[2] - log[0])) +
+          str(round(log[2] - log[0], 3)).split(".")[-1]
+          )
+
+
 if __name__ == '__main__':
     print(HOMEWORK_TITLE)
     print("注意：自动读取日志文件,优先从命令行参数,其次从程序所在目录")
@@ -113,13 +134,14 @@ if __name__ == '__main__':
 
     print()
     print("正在计算中,请稍后...")
-    start_time = time.time()
     p = Processor(input_file_path)
     _1, _2, _3 = MY_STUDENT_NUMBER, p.calculate_1(), p.calculate_3()
+    log.append(time.time())
+
     print("done")
     print()
     print("学号:", _1)
     print("进出车次数:", _2)
     print("累计停放秒数:", _3)
-    finish_time = time.time()
-    print("\n运行时间：", finish_time - start_time)
+
+    print_run_time()
