@@ -103,6 +103,8 @@ def print_run_time():
         h, m = divmod(m, 60)
         return "%02d:%02d:%02d." % (h, m, s)
 
+    print()
+    print("执行日志")
     print("Start ReadFile:00:00:00.000")
     print("End ReadFile:" +
           get_time_format(int(log[1] - log[0])) +
@@ -140,6 +142,7 @@ if __name__ == '__main__':
 
     print("done")
     print()
+    print("执行结果")
     print("学号:", _1)
     print("进出车次数:", _2)
     print("累计停放秒数:", _3)

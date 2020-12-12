@@ -69,18 +69,27 @@ class Processor2(multiprocessing.Process):
                     self.input_file.seek(-1, 1)
                     break
         # 读取文件
-        while self.size >= 0:
-            one_line_byte = self.input_file.readline()
-            if not one_line_byte:
-                break
-            self.size -= len(one_line_byte)
-            one_line = one_line_byte.decode(INPUT_ENCODING).strip()
+        content_b = self.input_file.read(self.size) + self.input_file.readline()
+
+        content_str = content_b.decode("GBK").strip().replace("\r", "")
+
+        for one_line in content_str.split("\n"):
             self.process_line(one_line)
 
+        # while self.size >= 0:
+        #     one_line_byte = self.input_file.readline()
+        #     if not one_line_byte:
+        #         break
+        #     self.size -= len(one_line_byte)
+        #     one_line = one_line_byte.decode(INPUT_ENCODING).strip()
+        #     self.process_line(one_line)
+
     def process_line(self, line):
-
-        dt, park_no, car_no, i_o = line.split(",")
-
+        try:
+            dt, park_no, car_no, i_o = line.split(",")
+        except ValueError:
+            print("error" + line)
+            time.sleep(60)
         # 过滤条件
         if park_no != MY_STUDENT_NUMBER:
             return
