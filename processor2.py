@@ -68,7 +68,7 @@ class Processor2(multiprocessing.Process):
                 if pre_read in separator and current_read not in separator:
                     self.input_file.seek(-1, 1)
                     break
-        # 读取文件
+        # 读文件
         content_b = self.input_file.read(self.size) + self.input_file.readline()
 
         content_str = content_b.decode("GBK").strip().replace("\r", "")
@@ -76,6 +76,7 @@ class Processor2(multiprocessing.Process):
         for one_line in content_str.split("\n"):
             self.process_line(one_line)
 
+        #  废弃代码，用这种方式读文件，不知道为什么耗时会特别大，大约耗时9秒（上面只需要5秒，不同机器可能会不同结果）
         # while self.size >= 0:
         #     one_line_byte = self.input_file.readline()
         #     if not one_line_byte:
@@ -85,11 +86,7 @@ class Processor2(multiprocessing.Process):
         #     self.process_line(one_line)
 
     def process_line(self, line):
-        try:
-            dt, park_no, car_no, i_o = line.split(",")
-        except ValueError:
-            print("error" + line)
-            time.sleep(60)
+        dt, park_no, car_no, i_o = line.split(",")
         # 过滤条件
         if park_no != MY_STUDENT_NUMBER:
             return
